@@ -53,11 +53,16 @@
 			$('body').append('<div style="position:fixed; top:0; left:0; overflow:hidden;"><input style="position:absolute; left:-300px;" type="text" value="" id="focus_retriever" readonly="true" /></div>');
 			this.focusRetriever = $('#focus_retriever');
 			this.focusRetrieved = false;
+			var self = this;
 			$(document).mousemove(function(e){
-				if (document.activeElement && document.activeElement.tagName == 'IFRAME') {
-					$.iframeTracker.focusRetriever.focus();
-					$.iframeTracker.focusRetrieved = true;
-				}
+			    if(!self.handlersList.some(function(el) {
+				return $(el.target).is($(document.activeElement));
+			    })) return;
+
+			    if (document.activeElement && document.activeElement.tagName == 'IFRAME') {
+				$.iframeTracker.focusRetriever.focus();
+				$.iframeTracker.focusRetrieved = true;
+			    }
 			});
 			
 			// Special processing to make it work with my old friend IE8 (and older) ;)
